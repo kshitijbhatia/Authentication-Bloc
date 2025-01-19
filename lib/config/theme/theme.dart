@@ -8,7 +8,8 @@ ThemeData theme() {
     textTheme: TextTheme(
       titleLarge: TextStyle(fontSize: 42.sp, color: Colors.black, fontWeight: FontWeight.w700),
       titleSmall: TextStyle(fontSize: 18.sp, color: Colors.black, fontWeight: FontWeight.w500),
-      labelSmall: TextStyle(fontSize: 14.sp, color: Colors.black, fontWeight: FontWeight.w500)
+      labelSmall: TextStyle(fontSize: 14.sp, color: Colors.black, fontWeight: FontWeight.w500),
+      displayMedium: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500)
     ),
   );
 }
