@@ -1,40 +1,39 @@
+import 'dart:developer';
+
+import 'package:auth_app/config/common/common_widgets.dart';
 import 'package:auth_app/features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:auth_app/features/authentication/presentation/pages/user_authenticated.dart';
 import 'package:auth_app/features/authentication/presentation/widgets/text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:auth_app/config/common/common_widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _LoginPageState extends State<LoginPage> {
 
-  late final GlobalKey<FormState> _signUpKey;
+  late final  GlobalKey<FormState> _loginKey;
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
-  late final TextEditingController _nameController;
 
   @override
   void initState() {
-    _signUpKey = GlobalKey<FormState>();
+    super.initState();
+    _loginKey = GlobalKey<FormState>();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
-    _nameController = TextEditingController();
-    super.initState();
   }
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _nameController.dispose();
     super.dispose();
   }
 
@@ -91,11 +90,9 @@ class _SignUpPageState extends State<SignUpPage> {
           }
         },
         child: Form(
-          key: _signUpKey,
+          key: _loginKey,
           child: Column(
             children: [
-              _nameView(),
-              15.ph,
               _emailView(),
               15.ph,
               _passwordView(),
@@ -105,21 +102,6 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _nameView() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("Your name", style: Theme.of(context).textTheme.labelSmall,),
-        4.ph,
-        CustomTextField(
-          controller: _nameController,
-          errorMessage: "Please enter your name",
-          hintText: "John Doe",
-        ),
-      ],
     );
   }
 
@@ -153,27 +135,27 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+
   Widget _continueButton() {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 40.h,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.lightGreenAccent
+            backgroundColor: Colors.lightGreenAccent
         ),
         onPressed: () {
-          if(_signUpKey.currentState!.validate()) {
-            final String name = _nameController.text;
+          FocusScope.of(context).unfocus();
+          if(_loginKey.currentState!.validate()) {
             final String email = _emailController.text;
             final String password = _passwordController.text;
-            FocusScope.of(context).unfocus();
-            context.read<AuthenticationBloc>().add(SignUpEvent(name: name, email: email, password: password));
+            context.read<AuthenticationBloc>().add(LoginEvent(password: password, email: email));
           }
         },
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
             if(state is AuthenticationLoading) {
-              return CircularProgressIndicator(color: Colors.white,);
+              return const CircularProgressIndicator(color: Colors.white,);
             } else {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

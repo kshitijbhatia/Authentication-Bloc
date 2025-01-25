@@ -24,7 +24,25 @@ class AuthDataSource {
         rethrow;
       }
       log("***signUp_auth_data_source: $error");
-      throw DataException("Unknown error occurred");
+      throw DataException((error as AuthException).message);
+    }
+  }
+
+  Future<User> login({required String email, required String password}) async {
+    try {
+      final AuthResponse response = await _supabaseClient.auth.signInWithPassword(password: password, email: email);
+      log("response: ${response.user!.toJson()}");
+      if(response.user != null) {
+        return response.user!;
+      } else {
+        throw DataException("Unknown error occurred");
+      }
+    } catch(error) {
+      if(error is DataException) {
+        rethrow;
+      }
+      log("***login_auth_data_source: $error");
+      throw DataException((error as AuthException).message);
     }
   }
 }

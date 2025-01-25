@@ -1,6 +1,8 @@
 import 'package:auth_app/config/theme/theme.dart';
+import 'package:auth_app/features/authentication/domain/usecases/log_in.dart';
 import 'package:auth_app/features/authentication/domain/usecases/sign_up.dart';
 import 'package:auth_app/features/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:auth_app/features/authentication/presentation/pages/login_page.dart';
 import 'package:auth_app/features/authentication/presentation/pages/signup_page.dart';
 import 'package:auth_app/injection_container.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,9 +40,9 @@ class MyApp extends StatelessWidget {
             theme: theme(),
             home: MultiBlocProvider(
               providers: [
-                BlocProvider<AuthenticationBloc>(create: (context) => AuthenticationBloc(serviceLocator<SignUpUseCase>()),)
+                BlocProvider<AuthenticationBloc>(create: (context) => serviceLocator<AuthenticationBloc>(),)
               ],
-              child: const SignUpPage(),
+              child: const LoginPage(),
             )
         );
       },

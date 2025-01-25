@@ -19,7 +19,21 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       if(error is DataException) {
         rethrow;
       }
-      log("***authentication_repo: ${error.toString()}");
+      log("***authentication_repo_signup: ${error.toString()}");
+      throw DataException(error.toString());
+    }
+  }
+
+  @override
+  Future<UserModel> login({required String email, required String password}) async {
+    try {
+      final User response = await _authDataSource.login(email: email, password: password);
+      return UserModel.fromJson(response.toJson());
+    } catch(error) {
+      if(error is DataException) {
+        rethrow;
+      }
+      log("***authentication_repo_login: ${error.toString()}");
       throw DataException(error.toString());
     }
   }
